@@ -252,6 +252,7 @@ BatteryInfo = namedtuple('BatteryInfo', 'charge_level remaining_time is_charging
 class Theme:
     local_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'icons')
     system_path = '/usr/share/batterymon/icons'
+    system_local_path = '/usr/local/share/batterymon/icons'
 
     def __init__(self, theme):
         self.theme = theme
@@ -268,7 +269,7 @@ class Theme:
         logger.debug("Theme %s validated" % self.theme)
 
     def __resolve_iconpath(self):
-        for path in [self.local_path, self.system_path]:
+        for path in [self.local_path, self.system_path, self.system_local_path]:
             themedir = os.path.join(path, self.theme)
             if os.path.isdir(themedir):
                 logger.debug('Using %s' % (themedir,))
