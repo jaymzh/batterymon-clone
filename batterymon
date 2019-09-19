@@ -194,9 +194,17 @@ class Battery:
         logger.debug("battery.is_discharging: %s" % str(is_discharging))
 
         # "energy_full" should be preferred over "energy_full_design"
-        energy_full = int_or_zero(cat(self.__dirname, 'energy_full'))
-        energy_now = int_or_zero(cat(self.__dirname, 'energy_now'))
-        power_now = int_or_zero(cat(self.__dirname, 'power_now'))
+        if os.path.exists(cat(self.__dirname, 'energy_full')):
+            energy_full_file = cat(self.__dirname, 'energy_full')
+            energy_now_file = cat(self.__dirname, 'energy_now')
+            power_now_file = cat(self.__dirname, 'power_now')
+        else:
+            energy_full_file = cat(self.__dirname, 'charge_full')
+            energy_now_file = cat(self.__dirname, 'charge_now')
+            power_now_file = cat(self.__dirname, 'current_now')
+        energy_full = int_or_zero(energy_full_file)
+        energy_now = int_or_zero(energy_now_file)
+        power_now = int_or_zero(power_now_file)
 
         if energy_full > 0:
             charge_level = 100 * energy_now // energy_full
